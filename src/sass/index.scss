@@ -1,2 +1,33 @@
 @import './common';
 @import './example';
+
+
+.gallery {
+    padding: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+img {
+    width: 530px;
+    height: 340px;
+    object-fit: cover;
+    border-radius: 10px 10px 0  0;
+}
+
+.photo-card {
+    padding: 5px;
+    cursor: pointer;
+    margin: 30px 0px;
+    background: rgb(228, 226, 231);
+    border-radius: 10px;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
