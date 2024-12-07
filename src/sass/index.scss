@@ -31,3 +31,18 @@ img {
     justify-content: space-between;
     padding: 10px;
 }
+
+.btn {
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: skyblue;
+    color: darkmagenta;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.btn:hover {
+    background-color: darkmagenta;
+    color: skyblue;
+}

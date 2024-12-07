@@ -1,5 +1,10 @@
+import Notiflix from "notiflix";
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
+
 import { getPhotos } from "./API/fetch-img";
 import { markupGallery } from "./JS/markup";
+
 
 const form = document.querySelector('#search-form');
 const inputEl = document.querySelector('input[name="searchQuery"]');
@@ -8,26 +13,45 @@ const btnLoadMore = document.querySelector('.js-load');
 
 
 let currentPage = 1;
+let currentQery = '';
 
-form.addEventListener('submit', onSubmit)
+form.addEventListener('submit', onSubmit);
 btnLoadMore.addEventListener('click', onLoad);
 
 function onLoad() {
     currentPage += 1;
-    getPhotos(currentPage).then(data => {
-        const markup = markupGallery(data.hits);
-        galleryEl.insertAdjacentHTML('beforeend', markup);
+    getPhotos(currentQery, currentPage).then(data => {
+        galleryEl.insertAdjacentHTML('beforeend', markupGallery(data.hits));
+        if(data.totalHits === data.total) {
+            btnLoadMore.hidden = true;
+        }  
+        // .catch(onError);
     });
 }
 
 function onSubmit(event) {
     event.preventDefault();
 
-    const query = inputEl.value.trim();
+    galleryEl.innerHTML = '';
 
-    getPhotos(query).then(data => {
-        const markup = markupGallery(data.hits);
-        galleryEl.insertAdjacentHTML('beforeend', markup);
-        btnLoadMore.hidden = false;
-    }).catch(e => console.log(e)).finally(form.reset());
+    currentPage = 1;
+    currentQery = inputEl.value.trim();
+
+    if(currentQery) {
+        Notiflix.Notify.success('Sol lucet omnibus');
+    } else {
+        Notiflix.Notify.failure('Qui timide rogat docet negare');
+    }
+
+    getPhotos(currentQery)
+    .then(data => {
+        galleryEl.insertAdjacentHTML('beforeend', markupGallery(data.hits));
+        if(data.totalHits !== data.total) {
+            btnLoadMore.hidden = false;
+        }  
+    }).catch(onError);
+}
+
+function onError() {
+    return galleryEl.innerHTML = `<h2>За запитом ${currentQery} нічого не знайдено</h2>`
 }
